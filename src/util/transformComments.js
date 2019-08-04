@@ -1,3 +1,41 @@
+/**
+ * The purpose of this function is to transform our data into a structure
+ * that makes dealing with it more convenient in our React components.
+ * @param {Array} comments
+ * @param {Array} favoriteComments
+ * @param {Array} users
+ */
+function transformComments(comments = [], favoriteComments = [], users = []) {
+  const rootComments = comments.filter(comment => !comment.parent);
+  rootComments.forEach(comment => {
+    comment.comments = [];
+    comment.commenters = [];
+    comment.favorited = false;
+    comment.hasFavorite = false;
+
+    if (favoriteComments.includes(comment.id)) {
+      comment.hasFavorite = true;
+      comment.favorited = true;
+    }
+
+    comment.user = users.find(user => user.id === comment.author);
+
+    if (comment.user && !comment.commenters.includes(comment.user.name)) {
+      comment.commenters.push(comment.user.name);
+    }
+
+    recTransformComments(
+      [...comments],
+      comment,
+      comment,
+      [...favoriteComments],
+      [...users]
+    );
+  });
+
+  return rootComments;
+}
+
 function recTransformComments(
   comments,
   parentComment,
@@ -32,36 +70,4 @@ function recTransformComments(
     );
   });
 }
-
-function transformComments(comments = [], favoriteComments = [], users = []) {
-  const rootComments = comments.filter(comment => !comment.parent);
-  rootComments.forEach(comment => {
-    comment.comments = [];
-    comment.commenters = [];
-    comment.favorited = false;
-    comment.hasFavorite = false;
-
-    if (favoriteComments.includes(comment.id)) {
-      comment.hasFavorite = true;
-      comment.favorited = true;
-    }
-
-    comment.user = users.find(user => user.id === comment.author);
-
-    if (comment.user && !comment.commenters.includes(comment.user.name)) {
-      comment.commenters.push(comment.user.name);
-    }
-
-    recTransformComments(
-      [...comments],
-      comment,
-      comment,
-      [...favoriteComments],
-      [...users]
-    );
-  });
-
-  return rootComments;
-}
-
 export default transformComments;
