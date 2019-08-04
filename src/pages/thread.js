@@ -100,22 +100,27 @@ const Thread = ({ location }) => {
   return (
     <Layout>
       <RootStateConsumer>
-        {({ state, addComment, favoriteComment }) => (
-          <div className="rounded bg-white shadow-md text-black py-4 px-4">
-            <ThreadComment
-              comment={transformComments(
-                state.comments,
-                state.favoriteComments,
-                state.users
-              ).find(c => c.id === location.state.id)}
-              onReply={addComment}
-              onFavorite={favoriteComment}
-            />
-            <Link to="/comments" className="text-blue-500 uppercase">
-              Go Back
-            </Link>
-          </div>
-        )}
+        {({ state, addComment, favoriteComment }) => {
+          const comment = transformComments(
+            state.comments,
+            state.favoriteComments,
+            state.users
+          ).find(c => c.id === (location.state && location.state.id)); // Added this to make gatsby build happy
+          return (
+            <div className="rounded bg-white shadow-md text-black py-4 px-4">
+              {comment && (
+                <ThreadComment
+                  comment={comment}
+                  onReply={addComment}
+                  onFavorite={favoriteComment}
+                />
+              )}
+              <Link to="/comments" className="text-blue-500 uppercase">
+                Go Back
+              </Link>
+            </div>
+          );
+        }}
       </RootStateConsumer>
     </Layout>
   );

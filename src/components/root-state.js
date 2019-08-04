@@ -3,10 +3,14 @@ import initState from '../data';
 const RootStateContext = createContext({});
 
 export class RootState extends Component {
-  state = localStorage.state ? JSON.parse(localStorage.state) : initState;
+  state =
+    typeof window !== 'undefined' && localStorage.state
+      ? JSON.parse(localStorage.state)
+      : initState;
 
   componentDidUpdate() {
-    localStorage.state = JSON.stringify(this.state);
+    if (typeof window !== 'undefined')
+      localStorage.state = JSON.stringify(this.state);
   }
 
   addComment({ subject, body, parent }) {

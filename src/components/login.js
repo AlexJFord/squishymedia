@@ -6,7 +6,7 @@ const Login = () => {
   const [hasError, setError] = useState(false);
   const [username, setUsername] = useState('');
 
-  if (localStorage.user) {
+  if (typeof window !== 'undefined' && localStorage.user) {
     useEffect(() => navigate('/comments/'));
   }
 
@@ -19,7 +19,7 @@ const Login = () => {
           const user = initState.users.find(u => u.name === username);
 
           if (user) {
-            localStorage.user = user.id;
+            if (typeof window !== 'undefined') localStorage.user = user.id;
             navigate('/comments/');
           } else {
             setError(true);
