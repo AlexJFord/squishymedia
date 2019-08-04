@@ -71,6 +71,12 @@ const ThreadComment = ({ comment, onReply, onFavorite }) => {
           ></textarea>
           <div className="w-full flex justify-end">
             <button
+              className="uppercase text-black mr-4"
+              onClick={() => setShowReplyForm(!showReplyForm)}
+            >
+              Never Mind
+            </button>
+            <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
