@@ -620,3 +620,13 @@ pre tt:after {
     font-size: 100%;
   }
 }
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+body {
+  @apply font-sans bg-gray-300;
+}

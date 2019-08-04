@@ -1,42 +1,40 @@
-import { Link } from "gatsby"
-import PropTypes from "prop-types"
-import React from "react"
+import { Link, navigate } from 'gatsby';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const Header = ({ siteTitle }) => (
   <header
+    className="w-full"
     style={{
       background: `rebeccapurple`,
       marginBottom: `1.45rem`,
     }}
   >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
+    <div className="container mx-auto py-4 flex justify-between">
+      <h1 className="m-0">
+        <Link to="/comments" className="text-white no-underline">
           {siteTitle}
         </Link>
       </h1>
+      <span
+        className="text-white no-underline cursor-pointer uppercase text-sm"
+        onClick={() => {
+          delete localStorage.user;
+          navigate('/');
+        }}
+      >
+        Sign Out
+      </span>
     </div>
   </header>
-)
+);
 
 Header.propTypes = {
   siteTitle: PropTypes.string,
-}
+};
 
 Header.defaultProps = {
   siteTitle: ``,
-}
+};
 
-export default Header
+export default Header;
