@@ -3,13 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const Header = ({ siteTitle }) => (
-  <header
-    className="w-full"
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
+  <header className="w-full bg-blue-500 mb-4">
     <div className="container mx-auto py-4 flex justify-between">
       <h1 className="m-0">
         <Link to="/comments" className="text-white no-underline">
