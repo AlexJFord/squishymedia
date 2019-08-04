@@ -8,10 +8,10 @@ import transformComments from '../util/transformComments';
 const ThreadComment = ({ comment, onReply, onFavorite }) => {
   const [body, setBody] = useState('');
   const [subject, setSubject] = useState('');
-
+  const [showReplyForm, setShowReplyForm] = useState(false);
   return (
     <div
-      key={comment.id}
+      id={comment.id}
       className="my-4 pl-4 text-black border-gray-500 border-l-2 border-solid"
     >
       <div className="flex justify-between">
@@ -34,7 +34,51 @@ const ThreadComment = ({ comment, onReply, onFavorite }) => {
       </div>
       <div>{comment.body}</div>
 
-      <span className="text-gray-500">{comment.user.name}</span>
+      <div className="text-gray-500 mb-4">{comment.user.name}</div>
+      <button
+        className="uppercase text-blue-500"
+        onClick={() => setShowReplyForm(!showReplyForm)}
+      >
+        Reply
+      </button>
+      {showReplyForm && (
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            setSubject('');
+            setBody('');
+            setShowReplyForm(false);
+            onReply({
+              subject,
+              body,
+              parent: comment.id,
+            });
+          }}
+        >
+          <input
+            autoFocus
+            className="w-full bg-gray-300 p-2 my-3 shadow-inner"
+            name="subject"
+            placeholder="Subject"
+            value={subject}
+            onChange={e => setSubject(e.target.value)}
+          />
+          <textarea
+            className="w-full bg-gray-300 p-2 shadow-inner"
+            placeholder="Comment"
+            value={body}
+            onChange={e => setBody(e.target.value)}
+          ></textarea>
+          <div className="w-full flex justify-end">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+            >
+              Reply
+            </button>
+          </div>
+        </form>
+      )}
       {comment.comments.map(c => (
         <ThreadComment
           key={c.id}
@@ -43,36 +87,6 @@ const ThreadComment = ({ comment, onReply, onFavorite }) => {
           onFavorite={onFavorite}
         />
       ))}
-      <div>
-        <input
-          className="w-full bg-gray-300 p-2 my-3 shadow-inner"
-          name="subject"
-          placeholder="Subject"
-          value={subject}
-          onChange={e => setSubject(e.target.value)}
-        />
-        <textarea
-          className="w-full bg-gray-300 p-2 shadow-inner"
-          value={body}
-          onChange={e => setBody(e.target.value)}
-        ></textarea>
-        <div className="w-full flex">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={() => {
-              setSubject('');
-              setBody('');
-              onReply({
-                subject,
-                body,
-                parent: comment.id,
-              });
-            }}
-          >
-            Reply
-          </button>
-        </div>
-      </div>
     </div>
   );
 };
